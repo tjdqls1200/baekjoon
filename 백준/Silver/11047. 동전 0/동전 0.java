@@ -19,17 +19,10 @@ public class Main {
         int count = 0;
         int remainingMoney = k;
 
-        while (remainingMoney > 0) {
-            for (int i = n - 1; i >= 0; i--) {
-                int addCount = remainingMoney / moneyUnits[i];
-                if (addCount == 0) {
-                    continue;
-                }
-
-                count += addCount;
+        for (int i = n - 1; i >= 0; i--) {
+            if (moneyUnits[i] <= remainingMoney) {
+                count += remainingMoney / moneyUnits[i];
                 remainingMoney %= moneyUnits[i];
-
-                break;
             }
         }
 
