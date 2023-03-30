@@ -10,6 +10,7 @@ class Main {
     static int[][] dp;
 
     public static void main(String[] args) throws IOException {
+        final StringBuilder sb = new StringBuilder();
         final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         char[] a = br.readLine().toCharArray();
@@ -31,9 +32,10 @@ class Main {
 
         findLcs(a, b, a.length, b.length);
         for (int i = LCS.size() - 1; i >= 0; i--) {
-            System.out.print(LCS.get(i));
+            sb.append(LCS.get(i));
         }
-        System.out.println();
+
+        System.out.println(sb);
     }
 
     private static void findLcs(char[] a, char[] b, int i, int j) {
