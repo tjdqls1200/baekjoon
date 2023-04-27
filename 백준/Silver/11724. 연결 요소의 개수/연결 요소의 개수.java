@@ -1,60 +1,52 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
-public class Main {
-    static List<ArrayList<Integer>> connectNumbers = new ArrayList<>();
-    static boolean[] connectTable;
-
+class Main {
+    static List<List<Integer>> lists = new ArrayList<>();
+    static boolean[] ch;
     public static void main(String[] args) throws IOException {
         final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        final StringBuilder sb = new StringBuilder();
+
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        // 방향 없는 그래프가 주어졌을 때, 연결 요소의 개수
-        // 첫째 줄에 정점의 개수 N과 간선의 개수 M
-        // 둘째 줄부터 M개의 줄에 간선의 양 끝점 u와 v
+        int n = Integer.parseInt(st.nextToken());
+        ch = new boolean[n + 1];
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-
-        connectTable = new boolean[N + 1];
-
-        for (int n = 0; n <= N; n++) {
-            connectNumbers.add(n, new ArrayList<>());
+        for (int i = 0; i <= n; i++) {
+            lists.add(new ArrayList<>());
         }
+        int m = Integer.parseInt(st.nextToken());
 
-        for (int m = 0; m < M; m++) {
+        for (int j = 0; j < m; j++) {
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
-
-            connectNumbers.get(a).add(b);
-            connectNumbers.get(b).add(a);
+            lists.get(a).add(b);
+            lists.get(b).add(a);
         }
 
-        int connectLine = 0;
-        for (int i = 1; i <= N; i++) {
-            if (connectTable[i]) {
+        int count = 0;
+        for (int i = 1; i <= n; i++) {
+            if (ch[i]) {
                 continue;
             }
-            
-            ++connectLine;
             dfs(i);
+            ++count;
         }
-
-
-        System.out.println(connectLine);
+        System.out.println(count);
     }
 
-    private static void dfs(int from) {
-        if (connectTable[from]) {
-            return;
-        }
-
-        connectTable[from] = true;
-
-        for (Integer to : connectNumbers.get(from)) {
-            dfs(to);
+    private static void dfs(int n) {
+        final List<Integer> list = lists.get(n);
+        for (int to : list) {
+            if (!ch[to]) {
+                ch[to] = true;
+                dfs(to);
+            }
         }
     }
 }
