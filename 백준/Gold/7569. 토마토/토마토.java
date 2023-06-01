@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int[][][] map;
+    static boolean[][][] ch;
     static int M, N, H;
     static int[] dh = {1, -1, 0, 0, 0, 0};
     static int[] dn = {0, 0, 0, 0, 1, -1};
@@ -24,6 +25,7 @@ public class Main {
         H = Integer.parseInt(st.nextToken());
 
         map = new int[H][N][M];
+        ch = new boolean[H][N][M];
 
         for (int i = 0; i < H; i++) {
             for (int j = 0; j < N; j++) {
@@ -32,6 +34,7 @@ public class Main {
                     int n = Integer.parseInt(st.nextToken());
                     if (n == 1) {
                         queue.offer(new Pos(i, j, k));
+                        ch[i][j][k] = true;
                     }
                     map[i][j][k] = n;
                 }
@@ -58,22 +61,22 @@ public class Main {
     private static boolean BFS() {
         int len = queue.size();
         boolean changed = false;
-        int mh, mn, mm;
 
         for (int l = 0; l < len; l++) {
             Pos pos = queue.poll();
             for (int i = 0; i < 6; i++) {
-                mh = pos.h + dh[i];
-                mn = pos.n + dn[i];
-                mm = pos.m + dm[i];
+                int mh = pos.h + dh[i];
+                int mn = pos.n + dn[i];
+                int mm = pos.m + dm[i];
                 // 범위 벗어나면 continue
                 if ((mh < 0 || mh >= H) || (mn < 0 || mn >= N) || (mm < 0 || mm >= M)) {
                     continue;
                 }
-                // 안 익은 토마토일 경우 
-               if (map[mh][mn][mm] == 0) {
+                // 안 익은 토마토인지, 같은 날 익은 토마토인지 체크
+               if ((map[mh][mn][mm] == 0) && !ch[mh][mn][mm]) {
                     changed = true;
                     map[mh][mn][mm] = 1;
+                    ch[mh][mn][mm] = true;
                     queue.offer(new Pos(mh, mn, mm));
                 }
             }
